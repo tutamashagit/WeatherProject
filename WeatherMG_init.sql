@@ -12,7 +12,7 @@ GO
 IF OBJECT_ID('WeatherMG.dbo.StagingWeatherCurrent') IS NULL
 CREATE TABLE [dbo].[StagingWeatherCurrent](
 	[StationId] [int] NOT NULL,
-	[MeasurentDate] [datetime2](0) NOT NULL,
+	[MeasurementDate] [datetime2](0) NOT NULL,
 	[MaxTemp] [decimal](5, 2) NOT NULL,
 	[Rain] [decimal](6, 3) NULL
 ) ON [PRIMARY]
@@ -22,7 +22,7 @@ GO
 IF OBJECT_ID('WeatherMG.dbo.StagingWeatherForecast') IS NULL
 CREATE TABLE [dbo].[StagingWeatherForecast](
 	[StationId] [int] NOT NULL,
-	[MeasurentDate] [datetime2](0) NOT NULL,
+	[MeasurementDate] [datetime2](0) NOT NULL,
 	[MaxTemp] [decimal](5, 2) NOT NULL,
 	[Rain] [decimal](6, 3) NULL
 ) ON [PRIMARY]
@@ -39,38 +39,39 @@ CREATE TABLE [dbo].[StagingWeatherHistory](
 ) ON [PRIMARY]
 GO
 
-/****** CREATE TABLE [dbo].[WeatherStation] ******/
-IF OBJECT_ID('WeatherMG.dbo.WeatherStation') IS NULL
-CREATE TABLE [dbo].[WeatherStation](
+/****** CREATE TABLE [dbo].[DimWeatherStation] ******/
+IF OBJECT_ID('WeatherMG.dbo.DimWeatherStation') IS NULL
+CREATE TABLE [dbo].[DimWeatherStation](
     [WeatherStationKey] [int] IDENTITY (1,1) NOT NULL,
 	[StationId] [int] NOT NULL,
 	[StationName] [varchar](50) NULL,
-PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_DimWeatherStation] PRIMARY KEY CLUSTERED 
 (
-	[WeatherStationKey] ASC
+	WeatherStationKey ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 
-/****** INSERT INTO TABLE [dbo].[WeatherStation] ******/
-IF OBJECT_ID('WeatherMG.dbo.WeatherStation') IS NOT NULL
+/****** INSERT INTO TABLE [dbo].[DimWeatherStation] ******/
+IF OBJECT_ID('WeatherMG.dbo.DimWeatherStation') IS NOT NULL
 BEGIN
-IF NOT EXISTS (SELECT 1 FROM [dbo].[WeatherStation] WHERE [StationId] = 2637487)
-INSERT [dbo].[WeatherStation] ([StationId], [StationName]) VALUES (2637487, N'Southampton')
-IF NOT EXISTS (SELECT 1 FROM [dbo].[WeatherStation] WHERE [StationId] = 2640729)
-INSERT [dbo].[WeatherStation] ([StationId], [StationName]) VALUES (2640729, N'Oxford')
-IF NOT EXISTS (SELECT 1 FROM [dbo].[WeatherStation] WHERE [StationId] = 2654993)
-INSERT [dbo].[WeatherStation] ([StationId], [StationName]) VALUES (2654993, N'Bradford')
-IF NOT EXISTS (SELECT 1 FROM [dbo].[WeatherStation] WHERE [StationId] = 7284876)
-INSERT [dbo].[WeatherStation] ([StationId], [StationName]) VALUES (7284876, N'Heathrow')
-IF NOT EXISTS (SELECT 1 FROM [dbo].[WeatherStation] WHERE [StationId] = 7299942)
-INSERT [dbo].[WeatherStation] ([StationId], [StationName]) VALUES (7299942, N'Camborne')
+IF NOT EXISTS (SELECT 1 FROM [dbo].[DimWeatherStation] WHERE [StationId] = 2637487)
+INSERT [dbo].[DimWeatherStation] ([StationId], [StationName]) VALUES (2637487, N'Southampton')
+IF NOT EXISTS (SELECT 1 FROM [dbo].[DimWeatherStation] WHERE [StationId] = 2640729)
+INSERT [dbo].[DimWeatherStation] ([StationId], [StationName]) VALUES (2640729, N'Oxford')
+IF NOT EXISTS (SELECT 1 FROM [dbo].[DimWeatherStation] WHERE [StationId] = 2654993)
+INSERT [dbo].[DimWeatherStation] ([StationId], [StationName]) VALUES (2654993, N'Bradford')
+IF NOT EXISTS (SELECT 1 FROM [dbo].[DimWeatherStation] WHERE [StationId] = 7284876)
+INSERT [dbo].[DimWeatherStation] ([StationId], [StationName]) VALUES (7284876, N'Heathrow')
+IF NOT EXISTS (SELECT 1 FROM [dbo].[DimWeatherStation] WHERE [StationId] = 7299942)
+INSERT [dbo].[DimWeatherStation] ([StationId], [StationName]) VALUES (7299942, N'Camborne')
 END
 
 /****** CREATE TABLE [dbo].[DimDate] ******/
 IF OBJECT_ID('WeatherMG.dbo.DimDate') IS NULL
+BEGIN
 CREATE TABLE dbo.DimDate (
-   DateKey INT NOT NULL PRIMARY KEY,
+   DateKey INT NOT NULL,
    [Date] DATE NOT NULL,
    [Day] TINYINT NOT NULL,
    [DaySuffix] CHAR(2) NOT NULL,
@@ -91,9 +92,11 @@ CREATE TABLE dbo.DimDate (
    [Year] INT NOT NULL,
    [MMYYYY] CHAR(6) NOT NULL,
    [MonthYear] CHAR(7) NOT NULL,
-   IsWeekend BIT NOT NULL,
-   [IsHoliday] BIT NOT NULL
-   )
+   IsWeekend BIT NOT NULL
+    CONSTRAINT [PK_DimDate] PRIMARY KEY CLUSTERED 
+(
+	DateKey ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY])
 
 /****** POPULATE TABLE [dbo].[DimDate] ******/
    SET NOCOUNT ON
@@ -101,10 +104,10 @@ CREATE TABLE dbo.DimDate (
 --TRUNCATE TABLE DimDate
 IF NOT EXISTS (SELECT 1 FROM WeatherMG.dbo.DimDate)
 BEGIN
-DECLARE @StartDate DATE = '1900-01-01'
-DECLARE @EndDate DATE = '2030-12-31'
+DECLARE @StartDate DATE = '1853-01-01'
+DECLARE @EndDate DATE = '2029-12-31'
 
-WHILE @StartDate < @EndDate
+WHILE @StartDate <= @EndDate
 BEGIN
    INSERT INTO [dbo].[DimDate] (
       [DateKey],
@@ -128,7 +131,8 @@ BEGIN
       [Year],
       [MMYYYY],
       [MonthYear],
-      [IsWeekend]      
+      [IsWeekend]
+	
       )
 
    SELECT DateKey = YEAR(@StartDate) * 10000 + MONTH(@StartDate) * 100 + DAY(@StartDate),
@@ -179,11 +183,30 @@ BEGIN
             THEN 1
          ELSE 0
          END
-      
-
+   
    SET @StartDate = DATEADD(DD, 1, @StartDate)
 END
 END
+
+ALTER TABLE DIMDATE ADD  FirstDayOfMonth   DATE NULL
+ALTER TABLE DIMDATE ADD  LastDayOfMonth   DATE NULL
+
+;WITH CTE AS (
+    SELECT  [year], [month], MIN([date]) OVER (PARTITION BY [year], [month] ) as FirstDayOfMonth,
+             MAX([date]) OVER (PARTITION BY [year], [month] ) as LastDayOfMonth
+    FROM    DimDate
+
+)
+UPDATE DimDate 
+SET FirstDayOfMonth = CTE.FirstDayOfMonth,
+    LastDayOfMonth      = CTE.LastDayOfMonth
+	FROM DIMDATE INNER JOIN CTE
+	ON CTE.[year] = DimDate.[year] AND CTE.[month] = DimDate.[month]
+
+ALTER TABLE DIMDATE ALTER COLUMN FirstDayOfMonth  DATE NOT NULL
+ALTER TABLE DIMDATE ALTER COLUMN LastDayOfMonth   DATE NOT NULL
+END
+
 
 /****** CREATE TABLE [dbo].[DimTime] ******/
 IF OBJECT_ID('WeatherMG.dbo.DimTime') IS NULL
@@ -336,3 +359,102 @@ END
 SET @hour=@hour+1
 END
 END
+
+USE [WeatherMG]
+GO
+
+---CREATE FactWeatherHistory
+
+IF OBJECT_ID('WeatherMG.dbo.FactWeatherHistory') IS NULL
+CREATE TABLE [dbo].[FactWeatherHistory]
+(
+[WeatherHistoryKey] INT IDENTITY (1,1) NOT NULL,
+[WeatherStationKey] INT NOT NULL,
+[DateKey] INT NOT NULL,
+[MeanMaxTemperature_degC] DECIMAL (3,2),
+[TotalRain_mm] DECIMAL (4,2),
+CONSTRAINT [PK_FactWeatherHistory] PRIMARY KEY CLUSTERED
+(
+[WeatherHistoryKey] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+--Adding Foreign Keys
+IF NOT EXISTS (SELECT *   FROM sys.foreign_keys 
+WHERE object_id = OBJECT_ID(N'dbo.FK_FactWeatherHistory_WeatherStation') AND parent_object_id = OBJECT_ID(N'dbo.FactWeatherHistory'))
+ALTER TABLE [dbo].[FactWeatherHistory]
+ADD CONSTRAINT FK_FactWeatherHistory_DimWeatherStation FOREIGN KEY ([WeatherStationKey])
+REFERENCES [dbo].[DimWeatherStation] ([WeatherStationKey])
+
+IF NOT EXISTS (SELECT *   FROM sys.foreign_keys 
+WHERE object_id = OBJECT_ID(N'dbo.FK_FactWeatherHistory_DimDate') AND parent_object_id = OBJECT_ID(N'dbo.FactWeatherHistory'))
+ALTER TABLE [dbo].[FactWeatherHistory]
+ADD CONSTRAINT FK_FactWeatherHistory_DimDate FOREIGN KEY ([DateKey])
+REFERENCES [dbo].[DimDate] ([DateKey])
+
+---CREATE FactWeatherCurrent
+IF OBJECT_ID('WeatherMG.dbo.FactWeatherCurrent') IS NULL
+CREATE TABLE [dbo].[FactWeatherCurrent]
+(
+[WeatherCurrentKey] INT IDENTITY (1,1) NOT NULL,
+[WeatherStationKey] INT NOT NULL,
+[DateKey] INT NOT NULL,
+[TimeKey] INT NOT NULL,
+[MeanMaxTemperature_degC] DECIMAL (3,2),
+[TotalRain_mm] DECIMAL (4,2),
+CONSTRAINT [PK_FactWeatherCurrent] PRIMARY KEY CLUSTERED
+(
+[WeatherCurrentKey] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+--Adding Foreign Keys
+IF NOT EXISTS (SELECT *   FROM sys.foreign_keys 
+WHERE object_id = OBJECT_ID(N'dbo.FK_FactWeatherCurrent_WeatherStation') AND parent_object_id = OBJECT_ID(N'dbo.FactWeatherCurrent'))
+ALTER TABLE [dbo].[FactWeatherCurrent]
+ADD CONSTRAINT FK_FactWeatherCurrent_DimWeatherStation FOREIGN KEY ([WeatherStationKey])
+REFERENCES [dbo].[DimWeatherStation] ([WeatherStationKey])
+
+IF NOT EXISTS (SELECT *   FROM sys.foreign_keys 
+WHERE object_id = OBJECT_ID(N'dbo.FK_FactWeatherCurrent_DimDate') AND parent_object_id = OBJECT_ID(N'dbo.FactWeatherCurrent'))
+ALTER TABLE [dbo].[FactWeatherCurrent]
+ADD CONSTRAINT FK_FactWeatherCurrent_DimDate FOREIGN KEY ([DateKey])
+REFERENCES [dbo].[DimDate] ([DateKey])
+
+IF NOT EXISTS (SELECT *   FROM sys.foreign_keys 
+WHERE object_id = OBJECT_ID(N'dbo.FK_FactWeatherCurrent_DimTime') AND parent_object_id = OBJECT_ID(N'dbo.FactWeatherCurrent'))
+ALTER TABLE [dbo].[FactWeatherCurrent]
+ADD CONSTRAINT FK_FactWeatherCurrent_DimTime FOREIGN KEY ([TimeKey])
+REFERENCES [dbo].[DimTime] ([TimeKey])
+
+---CREATE FactWeatherForecast
+IF OBJECT_ID('WeatherMG.dbo.FactWeatherForecast') IS NULL
+CREATE TABLE [dbo].[FactWeatherForecast]
+(
+[WeatherForecastKey] INT IDENTITY (1,1) NOT NULL,
+[WeatherStationKey] INT NOT NULL,
+[DateKey] INT NOT NULL,
+[TimeKey] INT NOT NULL,
+[MeanMaxTemperature_degC] DECIMAL (3,2),
+[TotalRain_mm] DECIMAL (4,2),
+CONSTRAINT [PK_FactWeatherForecast] PRIMARY KEY CLUSTERED
+(
+[WeatherForecastKey] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+--Adding Foreign Keys
+IF NOT EXISTS (SELECT *   FROM sys.foreign_keys 
+WHERE object_id = OBJECT_ID(N'dbo.FK_FactWeatherForecast_WeatherStation') AND parent_object_id = OBJECT_ID(N'dbo.FactWeatherForecast'))
+ALTER TABLE [dbo].[FactWeatherForecast]
+ADD CONSTRAINT FK_FactWeatherForecast_DimWeatherStation FOREIGN KEY ([WeatherStationKey])
+REFERENCES [dbo].[DimWeatherStation] ([WeatherStationKey])
+
+IF NOT EXISTS (SELECT *   FROM sys.foreign_keys 
+WHERE object_id = OBJECT_ID(N'dbo.FK_FactWeatherForecast_DimDate') AND parent_object_id = OBJECT_ID(N'dbo.FactWeatherForecast'))
+ALTER TABLE [dbo].[FactWeatherForecast]
+ADD CONSTRAINT FK_FactWeatherForecast_DimDate FOREIGN KEY ([DateKey])
+REFERENCES [dbo].[DimDate] ([DateKey])
+
+IF NOT EXISTS (SELECT *   FROM sys.foreign_keys 
+WHERE object_id = OBJECT_ID(N'dbo.FK_FactWeatherForecast_DimTime') AND parent_object_id = OBJECT_ID(N'dbo.FactWeatherForecast'))
+ALTER TABLE [dbo].[FactWeatherForecast]
+ADD CONSTRAINT FK_FactWeatherForecast_DimTime FOREIGN KEY ([TimeKey])
+REFERENCES [dbo].[DimTime] ([TimeKey])
