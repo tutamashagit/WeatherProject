@@ -1,0 +1,10 @@
+Project Deployment Guide
+-------------------------
+
+I. Project Initialization
+    1). Download WeatherProject from GitHub
+	https://github.com/tutamashagit/WeatherProject.git
+
+    2). Create WeatherMG database and populate dimension ans lookup tables
+	execute WeatherMG_init.sql
+
