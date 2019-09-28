@@ -2,9 +2,21 @@ Project Deployment Guide
 -------------------------
 
 I. Project Initialization
+
     1). Download WeatherProject from GitHub
 	https://github.com/tutamashagit/WeatherProject.git
 
     2). Create WeatherMG database and populate dimension ans lookup tables
 	execute WeatherMG_init.sql
 
+II. Deploy SSIS Project and schedule jobs
+
+    1). Deploy SSIS packages
+        SSISWeatherProject\SSISWeatherProject.sln
+	
+    2). Schedue SQL Agent jobs to execute packages
+	WeatherHistoryLoad     - execute once
+	WeatherCurrentLoad     - schedule to run daily
+	WeatherForecastLoad    - schedule to run daily
+	WeatherCurrentCleanup  - schedule to run daily
+	WeatherForecastCleanup - schedule to run daily

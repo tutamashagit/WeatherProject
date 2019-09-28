@@ -1,2 +1,0 @@
-# WeatherProject
-Weather DWH Demo

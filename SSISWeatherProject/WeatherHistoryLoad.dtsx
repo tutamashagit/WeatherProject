@@ -1,0 +1,1811 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="9/25/2019 5:34:18 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="DESKTOP-BTNGP73"
+  DTS:CreatorName="DESKTOP-BTNGP73\masha-desk"
+  DTS:DTSID="{B75EBCBC-685F-476F-809C-D467B779A986}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.1301.433"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="WeatherHistoryLoad"
+  DTS:PackageType="5"
+  DTS:VersionBuild="100"
+  DTS:VersionGUID="{FB14137C-EC66-43D3-9ACF-C408A6054B06}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[WeatherHistory File Conn Manager]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{E6FC44A4-17AB-44B2-938D-DB91B033CD45}"
+      DTS:ObjectName="WeatherHistory File Conn Manager">
+      <DTS:PropertyExpression
+        DTS:Name="ConnectionString">@[User::WeatherHistoryFilePath]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="FixedWidth"
+          DTS:LocaleID="1033"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="7"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:ObjectName="yyyy"
+              DTS:DTSID="{E231FB5E-8E49-44B5-993A-6B68F7620538}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="4"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:ObjectName="mm"
+              DTS:DTSID="{44ACDEB3-99F3-4093-9152-7F3768190A17}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="7"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:ObjectName="tmax"
+              DTS:DTSID="{2D65CE21-E69E-47C1-956C-ED933AB6CAD1}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="8"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:ObjectName="tmin"
+              DTS:DTSID="{83DB0F12-B554-47FF-AEA6-C46385B437FF}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="8"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:ObjectName="frost"
+              DTS:DTSID="{1D265714-12B8-4698-8D9D-CA302A801E0B}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="8"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:ObjectName="rain"
+              DTS:DTSID="{824CAB4A-CF93-4506-99D8-B5F442D72FE7}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="8"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:ObjectName="sun"
+              DTS:DTSID="{C5BB956A-653B-46E0-94E6-B2048A8C7CEF}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="2"
+              DTS:DataType="129"
+              DTS:ObjectName="crlf"
+              DTS:DTSID="{4AC8D8C7-686E-4514-9BC5-C8B164DC0059}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{F97504C7-3D89-4595-B3A7-DCA7F9029279}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="StationId">
+      <DTS:VariableValue
+        DTS:DataType="3">0</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{52BB1068-6146-4328-B71A-19A211CE985B}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="StationName">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{CDE2A167-0CCC-4DC2-B5CE-4F70F95E3CA7}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="Stations">
+      <DTS:VariableValue
+        DTS:DataSubType="ManagedSerializable"
+        DTS:DataType="13">
+        <SOAP-ENV:Envelope xmlns:clr="http://schemas.microsoft.com/soap/encoding/clr/1.0" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+          <SOAP-ENV:Body>
+            <xsd:anyType
+              id="ref-1"></xsd:anyType>
+          </SOAP-ENV:Body>
+        </SOAP-ENV:Envelope>
+      </DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{77513696-BDAB-4FE6-9421-B4F61DD04417}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="WeatherHistoryFilePath">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Foreach weather station"
+      DTS:CreationName="STOCK:FOREACHLOOP"
+      DTS:Description="Foreach Loop Container"
+      DTS:DTSID="{7A28BE45-85B1-44A9-9CB8-16FA91E3EFCA}"
+      DTS:ExecutableType="STOCK:FOREACHLOOP"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Foreach weather station">
+      <DTS:ForEachEnumerator
+        DTS:CreationName="Microsoft.ForEachADOEnumerator"
+        DTS:DTSID="{75CF9502-486F-4750-96E3-4909DCF77384}"
+        DTS:ObjectName="{75CF9502-486F-4750-96E3-4909DCF77384}">
+        <DTS:ObjectData>
+          <FEEADO
+            EnumType="EnumerateRowsInFirstTable"
+            VarName="User::Stations" />
+        </DTS:ObjectData>
+      </DTS:ForEachEnumerator>
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Foreach weather station\Download and scrub weather history file"
+          DTS:CreationName="Microsoft.ScriptTask"
+          DTS:Description="Script Task"
+          DTS:DTSID="{F0D4AE5C-7213-4387-9583-240B7F516066}"
+          DTS:ExecutableType="Microsoft.ScriptTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Download and scrub weather history file"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <ScriptProject
+              Name="ST_6b07be09a7784b738451a6eaf68cb1c6"
+              VSTAMajorVersion="15"
+              VSTAMinorVersion="0"
+              Language="CSharp"
+              ReadOnlyVariables="User::StationId,User::StationName,$Project::WeatherHistoryBaseUrl"
+              ReadWriteVariables="User::WeatherHistoryFilePath">
+              <ProjectItem
+                Name="Properties\Resources.resx"
+                Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+</root>]]></ProjectItem>
+              <ProjectItem
+                Name="Properties\Settings.Designer.cs"
+                Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_6b07be09a7784b738451a6eaf68cb1c6.Properties.Settings.get_Default():ST_6b07be09a7784b738451a6eaf68cb1c6.Properties.Sett" +
+    "ings")]
+
+namespace ST_6b07be09a7784b738451a6eaf68cb1c6.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
+              <ProjectItem
+                Name="ScriptMain.cs"
+                Encoding="UTF8"><![CDATA[#region Help:  Introduction to the script task
+/* The Script Task allows you to perform virtually any operation that can be accomplished in
+ * a .Net application within the context of an Integration Services control flow. 
+ * 
+ * Expand the other regions which have "Help" prefixes for examples of specific ways to use
+ * Integration Services features within this script task. */
+#endregion
+
+
+#region Namespaces
+using System;
+using System.Data;
+using Microsoft.SqlServer.Dts.Runtime;
+using System.Windows.Forms;
+using System.IO;
+using System.Net;
+using System.Linq;
+
+#endregion
+
+namespace ST_6b07be09a7784b738451a6eaf68cb1c6
+{
+    /// <summary>
+    /// ScriptMain is the entry point class of the script.  Do not change the name, attributes,
+    /// or parent of this class.
+    /// </summary>
+	[Microsoft.SqlServer.Dts.Tasks.ScriptTask.SSISScriptTaskEntryPointAttribute]
+	public partial class ScriptMain : Microsoft.SqlServer.Dts.Tasks.ScriptTask.VSTARTScriptObjectModelBase
+	{
+        #region Help:  Using Integration Services variables and parameters in a script
+        /* To use a variable in this script, first ensure that the variable has been added to 
+         * either the list contained in the ReadOnlyVariables property or the list contained in 
+         * the ReadWriteVariables property of this script task, according to whether or not your
+         * code needs to write to the variable.  To add the variable, save this script, close this instance of
+         * Visual Studio, and update the ReadOnlyVariables and 
+         * ReadWriteVariables properties in the Script Transformation Editor window.
+         * To use a parameter in this script, follow the same steps. Parameters are always read-only.
+         * 
+         * Example of reading from a variable:
+         *  DateTime startTime = (DateTime) Dts.Variables["System::StartTime"].Value;
+         * 
+         * Example of writing to a variable:
+         *  Dts.Variables["User::myStringVariable"].Value = "new value";
+         * 
+         * Example of reading from a package parameter:
+         *  int batchId = (int) Dts.Variables["$Package::batchId"].Value;
+         *  
+         * Example of reading from a project parameter:
+         *  int batchId = (int) Dts.Variables["$Project::batchId"].Value;
+         * 
+         * Example of reading from a sensitive project parameter:
+         *  int batchId = (int) Dts.Variables["$Project::batchId"].GetSensitiveValue();
+         * */
+
+        #endregion
+
+        #region Help:  Firing Integration Services events from a script
+        /* This script task can fire events for logging purposes.
+         * 
+         * Example of firing an error event:
+         *  Dts.Events.FireError(18, "Process Values", "Bad value", "", 0);
+         * 
+         * Example of firing an information event:
+         *  Dts.Events.FireInformation(3, "Process Values", "Processing has started", "", 0, ref fireAgain)
+         * 
+         * Example of firing a warning event:
+         *  Dts.Events.FireWarning(14, "Process Values", "No values received for input", "", 0);
+         * */
+        #endregion
+
+        #region Help:  Using Integration Services connection managers in a script
+        /* Some types of connection managers can be used in this script task.  See the topic 
+         * "Working with Connection Managers Programatically" for details.
+         * 
+         * Example of using an ADO.Net connection manager:
+         *  object rawConnection = Dts.Connections["Sales DB"].AcquireConnection(Dts.Transaction);
+         *  SqlConnection myADONETConnection = (SqlConnection)rawConnection;
+         *  //Use the connection in some code here, then release the connection
+         *  Dts.Connections["Sales DB"].ReleaseConnection(rawConnection);
+         *
+         * Example of using a File connection manager
+         *  object rawConnection = Dts.Connections["Prices.zip"].AcquireConnection(Dts.Transaction);
+         *  string filePath = (string)rawConnection;
+         *  //Use the connection in some code here, then release the connection
+         *  Dts.Connections["Prices.zip"].ReleaseConnection(rawConnection);
+         * */
+        #endregion
+
+
+		/// <summary>
+        /// This method is called when this script task executes in the control flow.
+        /// Before returning from this method, set the value of Dts.TaskResult to indicate success or failure.
+        /// To open Help, press F1.
+        /// </summary>
+        public void Main()
+        {
+            try
+            {
+                bool fireAgain = true;
+                string stationId = Dts.Variables["User::StationId"].Value.ToString();
+                string stationName = Dts.Variables["User::StationName"].Value.ToString().ToLower();
+                string weatherHistoryBaseUrl = Dts.Variables["$Project::WeatherHistoryBaseUrl"].Value.ToString();
+                string downlowdUrl = string.Format("{0}{1}data.txt", weatherHistoryBaseUrl, stationName);
+
+                // Create a webclient to download a file
+                // source https://www.metoffice.gov.uk/pub/data/weather/uk/climate/stationdata/armaghdata.txt
+                // destination  C:\Users\john-doe\AppData\Local\Temp\bradford.txt
+                string content;
+                using (WebClient client = new WebClient())
+                {
+                    content = client.DownloadString(downlowdUrl);
+                    Dts.Events.FireInformation(0, "Download Weather History", "Finished downloading " + downlowdUrl, string.Empty, 0, ref fireAgain);
+                }
+
+                // do some scrubing on loaded data
+                string lastColCaption = "hours";
+                int start = content.IndexOf(lastColCaption) + lastColCaption.Length + 2;
+                content = content.Substring(start, content.Length - start);
+                content = content.Replace("---", "   ");
+                content = content.Replace("*", " ");
+                string[] data = content.Split( new[] { Environment.NewLine }, StringSplitOptions.None );
+                var lines = data
+                    .Select(x => x.Length > 50 ? x.Substring(0, 50) : x)
+                    .Where(x => x.Length == 50)
+                    .ToList();
+ 
+                // save weather data to file
+                string weatherHistoryFile = string.Format(@"{0}{1}.txt", System.IO.Path.GetTempPath(), stationName);
+                using (StreamWriter file = new StreamWriter(weatherHistoryFile))
+                {
+                    lines.ForEach(file.WriteLine);
+                }
+
+                // set package variable to the loaded file path
+                Dts.Variables["User::WeatherHistoryFilePath"].Value = weatherHistoryFile;
+                Dts.Events.FireInformation(0, "Download Weather History", "Data saved to " + weatherHistoryFile, string.Empty, 0, ref fireAgain);
+                Dts.TaskResult = (int)ScriptResults.Success;
+            }
+            catch (Exception ex)
+            {
+                Dts.Events.FireError(0, "Download Weather History", "Download failed: " + ex.Message, string.Empty, 0);
+                Dts.TaskResult = (int)ScriptResults.Failure;
+            }
+        }
+
+        #region ScriptResults declaration
+        /// <summary>
+        /// This enum provides a convenient shorthand within the scope of this class for setting the
+        /// result of the script.
+        /// 
+        /// This code was generated automatically.
+        /// </summary>
+        enum ScriptResults
+        {
+            Success = Microsoft.SqlServer.Dts.Runtime.DTSExecResult.Success,
+            Failure = Microsoft.SqlServer.Dts.Runtime.DTSExecResult.Failure
+        };
+        #endregion
+
+	}
+}]]></ProjectItem>
+              <ProjectItem
+                Name="ST_6b07be09a7784b738451a6eaf68cb1c6.csproj"
+                Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2B748ABD-F16E-4E3C-B587-BA3FD4B60380}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ST_6b07be09a7784b738451a6eaf68cb1c6</RootNamespace>
+    <AssemblyName>ST_6b07be09a7784b738451a6eaf68cb1c6</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.ScriptTask, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptMain.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <!-- Include the build rules for a C# project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="VSTAHostName" HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}" ApplicationType="usd" Language="cs" TemplatesPath="" />
+        <Host Name="ScriptTask" />
+        <ProjectClient>
+          <HostIdentifier>SSIS_ST140</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>]]></ProjectItem>
+              <ProjectItem
+                Name="Project"
+                Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
+<c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="4.0" schemaVersion="1.0">
+  <msb:PropertyGroup>
+    <msb:CodeName>ST_6b07be09a7784b738451a6eaf68cb1c6</msb:CodeName>
+    <msb:Language>msBuild</msb:Language>
+    <msb:DisplayName>ST_6b07be09a7784b738451a6eaf68cb1c6</msb:DisplayName>
+    <msb:ProjectId>{5E58015D-7F51-4BDC-89AC-8A3DADA039F8}</msb:ProjectId>
+  </msb:PropertyGroup>
+  <msb:ItemGroup>
+    <msb:Project Include="ST_6b07be09a7784b738451a6eaf68cb1c6.csproj" />
+    <msb:File Include="Properties\Resources.resx" />
+    <msb:File Include="Properties\Settings.settings" />
+    <msb:File Include="Properties\AssemblyInfo.cs" />
+    <msb:File Include="Properties\Resources.Designer.cs" />
+    <msb:File Include="Properties\Settings.Designer.cs" />
+    <msb:File Include="ScriptMain.cs" />
+  </msb:ItemGroup>
+</c:Project>]]></ProjectItem>
+              <ProjectItem
+                Name="Properties\AssemblyInfo.cs"
+                Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_6b07be09a7784b738451a6eaf68cb1c6")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("HP Inc.")]
+[assembly: AssemblyProduct("ST_6b07be09a7784b738451a6eaf68cb1c6")]
+[assembly: AssemblyCopyright("Copyright @ HP Inc. 2019")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+              <ProjectItem
+                Name="Properties\Settings.settings"
+                Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
+              <ProjectItem
+                Name="Properties\Resources.Designer.cs"
+                Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_6b07be09a7784b738451a6eaf68cb1c6.Properties.Resources.get_ResourceManager():System.Resources.Resou" +
+    "rceManager")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_6b07be09a7784b738451a6eaf68cb1c6.Properties.Resources.get_Culture():System.Globalization.CultureIn" +
+    "fo")]
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_6b07be09a7784b738451a6eaf68cb1c6.Properties.Resources.set_Culture(System.Globalization.CultureInfo" +
+    "):Void")]
+
+namespace ST_6b07be09a7784b738451a6eaf68cb1c6.Properties {
+    
+    
+    /// <summary>
+    ///   A strongly-typed resource class, for looking up localized strings, etc.
+    /// </summary>
+    // This class was auto-generated by the StronglyTypedResourceBuilder
+    // class via a tool like ResGen or Visual Studio.
+    // To add or remove a member, edit your .ResX file then rerun ResGen
+    // with the /str option, or rebuild your VS project.
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    internal class Resources {
+        
+        private static global::System.Resources.ResourceManager resourceMan;
+        
+        private static global::System.Globalization.CultureInfo resourceCulture;
+        
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        internal Resources() {
+        }
+        
+        /// <summary>
+        ///   Returns the cached ResourceManager instance used by this class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if ((resourceMan == null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ST_6b07be09a7784b738451a6eaf68cb1c6.Properties.Resources", typeof(Resources).Assembly);
+                    resourceMan = temp;
+                }
+                return resourceMan;
+            }
+        }
+        
+        /// <summary>
+        ///   Overrides the current thread's CurrentUICulture property for all
+        ///   resource lookups using this strongly typed resource class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
+                return resourceCulture;
+            }
+            set {
+                resourceCulture = value;
+            }
+        }
+    }
+}]]></ProjectItem>
+              <BinaryItem
+                Name="ST_6b07be09a7784b738451a6eaf68cb1c6.dll">TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDAD5rj10AAAAAAAAAAOAAIiALATAAABgAAAAIAAAAAAAAXjYA
+AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAGAAAAAAAAAACAAAAAAgAAAAAAAAMAYIUAABAA
+ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAAw2AABPAAAAAEAAAJQEAAAAAAAAAAAAAAAAAAAA
+AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAAZBYAAAAgAAAAGAAAAAIA
+AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAJQEAAAAQAAAAAYAAAAaAAAAAAAAAAAAAAAAAABAAABA
+LnJlbG9jAAAMAAAAAGAAAAACAAAAIAAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAABA
+NgAAAAAAAEgAAAACAAUAjCMAAMgRAAABAAAAAAAAAFQ1AAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAABswBwBJAgAAAQAAERcKAigQAAAKbxEAAApyAQAAcG8SAAAK
+bxMAAApvFAAACiYCKBAAAApvEQAACnIhAABwbxIAAApvEwAACm8UAAAKbxUAAAoLAigQAAAKbxEA
+AApyRQAAcG8SAAAKbxMAAApvFAAACgxyhQAAcAgHKBYAAAoNcxcAAAoTCREJCW8YAAAKEwQCKBAA
+AApvGQAAChZyowAAcHLVAABwCSgaAAAKfhsAAAoWEgBvHAAACt4MEQksBxEJbx0AAArccgEBAHAT
+BREEEQVvHgAAChEFbx8AAApYGFgTBhEEEQYRBG8fAAAKEQZZbyAAAAoTBBEEcg0BAHByFQEAcG8h
+AAAKEwQRBHIdAQBwciEBAHBvIQAAChMEEQQXjSAAAAElFigiAAAKohZvIwAACn4IAAAEJS0XJn4H
+AAAE/gYMAAAGcyQAAAolgAgAAAQoAQAAK34JAAAEJS0XJn4HAAAE/gYNAAAGcyYAAAolgAkAAAQo
+AgAAKygDAAArEwdyJQEAcCgpAAAKBygWAAAKEwgRCHMqAAAKEwoRBxEKJf4HKwAACnMsAAAKby0A
+AAreDBEKLAcRCm8dAAAK3AIoEAAACm8RAAAKcjsBAHBvEgAAChEIby4AAAoCKBAAAApvGQAAChZy
+owAAcHJ1AQBwEQgoGgAACn4bAAAKFhIAbxwAAAoCKBAAAAoWby8AAArePhMLAigQAAAKbxkAAAoW
+cqMAAHBykwEAcBELbzAAAAooGgAACn4bAAAKFm8xAAAKJgIoEAAAChdvLwAACt4AKgAAAEFMAAAC
+AAAAewAAADUAAACwAAAADAAAAAAAAAACAAAAkwEAABcAAACqAQAADAAAAAAAAAAAAAAAAAAAAAoC
+AAAKAgAAPgAAABIAAAEeAigyAAAKKh4CKDMAAAoqrn4BAAAELR5ytwEAcNADAAACKDQAAApvNQAA
+CnM2AAAKgAEAAAR+AQAABCoafgIAAAQqHgKAAgAABCoafgMAAAQqHgIoNwAACioucwgAAAaAAwAA
+BCoucwsAAAaABwAABCpaA28fAAAKHzIwAgMqAxYfMm8gAAAKKi4Dbx8AAAofMv4BKgAAAEJTSkIB
+AAEAAAAAAAwAAAB2NC4wLjMwMzE5AAAAAAUAbAAAAFwFAAAjfgAAyAUAAEwHAAAjU3RyaW5ncwAA
+AAAUDQAALAIAACNVUwBADwAAEAAAACNHVUlEAAAAUA8AAHgCAAAjQmxvYgAAAAAAAAACAAABVx2i
+CQkLAAAA+gEzABYAAAEAAAAsAAAABgAAAAkAAAANAAAAAwAAADcAAAACAAAAEQAAAAEAAAACAAAA
+AwAAAAQAAAAEAAAAAQAAAAUAAAABAAAAAgAAAAMAAAAAAJgEAQAAAAAABgD+AswFBgCNA8wFBgBK
+ArkFDwBABgAABgB3AiYFBgDhAiYFBgDCAiYFBgB0AyYFBgAeAyYFBgA3AyYFBgCOAiYFBgCpAs0D
+CgBSA0cECgDBAUcEBgBEAMEADgAZB+0GBgCCBYMABgA4BckEBgDQBMkEBgASAswFBgDfBskEBgBL
+AMkEBgAtArkFBgBeBewFBgBCBREFDgD9AYIEDgBeAoIEDgDdAfwECgBwBEcEEgCCBkQBEgAAAUQB
+BgD4A8kECgBuBUcEBgAUAckEBgAjB8kEBgCVBskEFgAJAU4FBgAtAMEABgAYBIMABgCPBYMABgA7
+AMkEBgB6AckEBgAgAckEBgA8ByYFAAAAAHoAAAAAAAEAAQABABAA4QRSADkAAQABAAAAEADzBU8G
+VQABAAMAAAEQAIwGTwZxAAMABwADAQAAuAYAAE0ABAAKAAMhEAC9AAAAVQAHAAoAEQDVBEwBEQCx
+AVABEQDkAFQBBgasAFgBVoCoBlsBVoCRAVsBNgB2AF8BFgABAGMBFgAXAGsBUCAAAAAAhgDnBAYA
+AQD0IgAAAACGGKwFBgABAPwiAAAAAIMYrAUGAAEABCMAAAAAkwhaBXMBAQAwIwAAAACTCJkBeAEB
+ADcjAAAAAJMIpQF9AQEAPyMAAAAAlgj+BoMBAgBGIwAAAACGGKwFBgACAE4jAAAAAJEYsgWIAQIA
+WiMAAAAAkRiyBYgBAgD8IgAAAACGGKwFBgACAGYjAAAAAIMACgBQAAIAfSMAAAAAgwAgAIwBAwAA
+AAEAvwMAAAEANgcAAAEANgcJAKwFAQARAKwFBgAZAKwFCgApAKwFEAAxAKwFEAA5AKwFEABBAKwF
+EABJAKwFEABRAKwFEABZAKwFEABhAKwFEABpAKwFBgChAKwFBgC5AKwFBgDZAKwFFQBxALAGMQDp
+AH4GNgDxAMAEOwD5AKsDQQCpAPYDRQABAZoFRQABAdgGSQCBAKwFBgCBAOcDUADpAMYGVQABAdEG
+WwABAUUHYQAJAewEZAARAfUBBgABAcUDbwABAR0EdAABAf8DeAABAdwAfgAZAW4BhAABAfgGiAAM
+AKwFmQApAeYGnwAUAKwFmQApAX8BxQApAS8H4gA5AREEhACJAKwFEABBAWQBEAAcAKwFmQAkAAkE
+AAH5ALUDCwHpAAoHAQCRAPQARQAJAaIFEAFxAKwFBgCpAKwFBgBRATIBGQFRATgHIgHBAKwFKAHh
+AKwFBgAIABQAQgEIABgARwEpAHsAyAEuAAsAoAEuABMAqQEuABsAyAEuACMA0QEuACsA+gEuADMA
++gEuADsAAAIuAEMA0QEuAEsADQIuAFMA+gEuAFsAKwJDAGMARwFJAHsAyAFhAGsARwFjAHMARwHD
+AGsARwEbAAMAAQAEAAMAAABeBZEBAAC5AZYBAAACB5sBAgAEAAMAAgAFAAUAAQAGAAUAAgAHAAcA
+kgC+APMA+gAEgAAAAQAAACocP0gAAAAAAABSAAAABAAAAAAAAAAAAAAAMAG0AAAAAAAOAAAAAAAA
+AAAAAAA5ASgEAAAAAAQAAAAAAAAAAAAAADAByQQAAAAADgAAAAAAAAAAAAAAOQGNAAAAAAAEAAAA
+AAAAAAAAAAAwAYUBAAAAAAAAAAABAAAA/QUAAAUAAgAGAAIASwC5AE8A3gBRAN4AAAAAPD45X18w
+XzAAPE1haW4+Yl9fMF8wADw+OV9fMF8xADxNYWluPmJfXzBfMQBJRW51bWVyYWJsZWAxAEFjdGlv
+bmAxAExpc3RgMQBGdW5jYDIAU1RfNmIwN2JlMDlhNzc4NGI3Mzg0NTFhNmVhZjY4Y2IxYzYAPD45
+ADxNb2R1bGU+AFN5c3RlbS5JTwBNaWNyb3NvZnQuU3FsU2VydmVyLk1hbmFnZWREVFMAdmFsdWVf
+XwBtc2NvcmxpYgA8PmMAU3lzdGVtLkNvbGxlY3Rpb25zLkdlbmVyaWMAUmVwbGFjZQBkZWZhdWx0
+SW5zdGFuY2UAZ2V0X01lc3NhZ2UAVmFyaWFibGUARW51bWVyYWJsZQBJRGlzcG9zYWJsZQBSdW50
+aW1lVHlwZUhhbmRsZQBHZXRUeXBlRnJvbUhhbmRsZQBNaWNyb3NvZnQuU3FsU2VydmVyLkR0cy5S
+dW50aW1lAFdyaXRlTGluZQBnZXRfTmV3TGluZQBUeXBlAFdoZXJlAFN5c3RlbS5Db3JlAEZhaWx1
+cmUAZ2V0X0N1bHR1cmUAc2V0X0N1bHR1cmUAcmVzb3VyY2VDdWx0dXJlAFZTVEFSVFNjcmlwdE9i
+amVjdE1vZGVsQmFzZQBBcHBsaWNhdGlvblNldHRpbmdzQmFzZQBEaXNwb3NlAEVkaXRvckJyb3dz
+YWJsZVN0YXRlAENvbXBpbGVyR2VuZXJhdGVkQXR0cmlidXRlAERlYnVnZ2VyTm9uVXNlckNvZGVB
+dHRyaWJ1dGUARGVidWdnYWJsZUF0dHJpYnV0ZQBFZGl0b3JCcm93c2FibGVBdHRyaWJ1dGUAQXNz
+ZW1ibHlUaXRsZUF0dHJpYnV0ZQBBc3NlbWJseVRyYWRlbWFya0F0dHJpYnV0ZQBUYXJnZXRGcmFt
+ZXdvcmtBdHRyaWJ1dGUAQXNzZW1ibHlDb25maWd1cmF0aW9uQXR0cmlidXRlAEFzc2VtYmx5RGVz
+Y3JpcHRpb25BdHRyaWJ1dGUAQ29tcGlsYXRpb25SZWxheGF0aW9uc0F0dHJpYnV0ZQBBc3NlbWJs
+eVByb2R1Y3RBdHRyaWJ1dGUAQXNzZW1ibHlDb3B5cmlnaHRBdHRyaWJ1dGUAU1NJU1NjcmlwdFRh
+c2tFbnRyeVBvaW50QXR0cmlidXRlAEFzc2VtYmx5Q29tcGFueUF0dHJpYnV0ZQBSdW50aW1lQ29t
+cGF0aWJpbGl0eUF0dHJpYnV0ZQBnZXRfVmFsdWUAc2V0X1ZhbHVlAHZhbHVlAEluZGV4T2YAU3lz
+dGVtLlJ1bnRpbWUuVmVyc2lvbmluZwBEb3dubG9hZFN0cmluZwBUb1N0cmluZwBTdWJzdHJpbmcA
+Rm9yRWFjaABHZXRUZW1wUGF0aABnZXRfTGVuZ3RoAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuU2NyaXB0
+VGFzawBNaWNyb3NvZnQuU3FsU2VydmVyLkR0cy5UYXNrcy5TY3JpcHRUYXNrAFNjcmlwdE9iamVj
+dE1vZGVsAFN5c3RlbS5Db21wb25lbnRNb2RlbABTVF82YjA3YmUwOWE3Nzg0YjczODQ1MWE2ZWFm
+NjhjYjFjNi5kbGwAZ2V0X0l0ZW0AU3lzdGVtAEVudW0AcmVzb3VyY2VNYW4AU2NyaXB0TWFpbgBG
+aXJlSW5mb3JtYXRpb24AU3lzdGVtLkNvbmZpZ3VyYXRpb24AU3lzdGVtLkdsb2JhbGl6YXRpb24A
+U3lzdGVtLlJlZmxlY3Rpb24ARXhjZXB0aW9uAEN1bHR1cmVJbmZvAFN5c3RlbS5MaW5xAGdldF9S
+ZXNvdXJjZU1hbmFnZXIARXZlbnRzT2JqZWN0V3JhcHBlcgBTdHJlYW1Xcml0ZXIAVGV4dFdyaXRl
+cgBUb0xvd2VyAEZpcmVFcnJvcgAuY3RvcgAuY2N0b3IAU3lzdGVtLkRpYWdub3N0aWNzAFN5c3Rl
+bS5SdW50aW1lLkNvbXBpbGVyU2VydmljZXMAU3lzdGVtLlJlc291cmNlcwBTVF82YjA3YmUwOWE3
+Nzg0YjczODQ1MWE2ZWFmNjhjYjFjNi5Qcm9wZXJ0aWVzLlJlc291cmNlcy5yZXNvdXJjZXMARGVi
+dWdnaW5nTW9kZXMAU1RfNmIwN2JlMDlhNzc4NGI3Mzg0NTFhNmVhZjY4Y2IxYzYuUHJvcGVydGll
+cwBnZXRfVmFyaWFibGVzAFNldHRpbmdzAFN0cmluZ1NwbGl0T3B0aW9ucwBTdWNjZXNzAGdldF9E
+dHMAU2NyaXB0UmVzdWx0cwBnZXRfRXZlbnRzAENvbmNhdABGb3JtYXQAT2JqZWN0AFNlbGVjdABT
+eXN0ZW0uTmV0AFNwbGl0AGdldF9EZWZhdWx0AHNldF9UYXNrUmVzdWx0AFdlYkNsaWVudABFbnZp
+cm9ubWVudABUb0xpc3QAeABnZXRfQXNzZW1ibHkARW1wdHkAAAAfVQBzAGUAcgA6ADoAUwB0AGEA
+dABpAG8AbgBJAGQAACNVAHMAZQByADoAOgBTAHQAYQB0AGkAbwBuAE4AYQBtAGUAAD8kAFAAcgBv
+AGoAZQBjAHQAOgA6AFcAZQBhAHQAaABlAHIASABpAHMAdABvAHIAeQBCAGEAcwBlAFUAcgBsAAAd
+ewAwAH0AewAxAH0AZABhAHQAYQAuAHQAeAB0AAAxRABvAHcAbgBsAG8AYQBkACAAVwBlAGEAdABo
+AGUAcgAgAEgAaQBzAHQAbwByAHkAACtGAGkAbgBpAHMAaABlAGQAIABkAG8AdwBuAGwAbwBhAGQA
+aQBuAGcAIAAAC2gAbwB1AHIAcwAABy0ALQAtAAEHIAAgACAAAAMqAAADIAAAFXsAMAB9AHsAMQB9
+AC4AdAB4AHQAADlVAHMAZQByADoAOgBXAGUAYQB0AGgAZQByAEgAaQBzAHQAbwByAHkARgBpAGwA
+ZQBQAGEAdABoAAAdRABhAHQAYQAgAHMAYQB2AGUAZAAgAHQAbwAgAAAjRABvAHcAbgBsAG8AYQBk
+ACAAZgBhAGkAbABlAGQAOgAgAABxUwBUAF8ANgBiADAANwBiAGUAMAA5AGEANwA3ADgANABiADcA
+MwA4ADQANQAxAGEANgBlAGEAZgA2ADgAYwBiADEAYwA2AC4AUAByAG8AcABlAHIAdABpAGUAcwAu
+AFIAZQBzAG8AdQByAGMAZQBzAAAAAAAQYvN/LFG7QJvfAPA6JELjAAQgAQEIAyAAAQUgAQEREQQg
+AQEOBSABARFpFQcMAg4ODg4OCBUSPQEODhJBEkUSSQQgABJ1BCAAEnkFIAESfRwDIAAcAyAADgYA
+Aw4OHBwEIAEODgUgABKAhQUAAg4ODgIGDgogBgEIDg4OCBACBCABCA4DIAAIBSACDggIBSACDg4O
+AwAADgkgAh0OHQ4RgJEGFRJZAg4OBSACARwYGRACAhUSgJkBHgEVEoCZAR4AFRJZAh4AHgEECgIO
+DgYVElkCDgIYEAECFRKAmQEeABUSgJkBHgAVElkCHgACAwoBDhAQAQEVEj0BHgAVEoCZAR4ABhUS
+gKUBDgUVEj0BDgogAQEVEoClARMABCABARwIIAUCCA4ODggIAAESgKkRgK0FIAASgLEHIAIBDhKA
+sQi3elxWGTTgiQiJhF3NgIDMkQQAAAAABAEAAAADBhJhAwYSZQMGEhACBggDBhEUAwYSGAcGFRJZ
+Ag4OBwYVElkCDgIEAAASYQQAABJlBQABARJlBAAAEhADAAABBCABAg4ECAASYQQIABJlBAgAEhAI
+AQAIAAAAAAAeAQABAFQCFldyYXBOb25FeGNlcHRpb25UaHJvd3MBCAEAAgAAAAAAKAEAI1NUXzZi
+MDdiZTA5YTc3ODRiNzM4NDUxYTZlYWY2OGNiMWM2AAAFAQAAAAAMAQAHSFAgSW5jLgAAHQEAGENv
+cHlyaWdodCBAIEhQIEluYy4gMjAxOQAASQEAGi5ORVRGcmFtZXdvcmssVmVyc2lvbj12NC41AQBU
+DhRGcmFtZXdvcmtEaXNwbGF5TmFtZRIuTkVUIEZyYW1ld29yayA0LjUAAAC0AAAAzsrvvgEAAACR
+AAAAbFN5c3RlbS5SZXNvdXJjZXMuUmVzb3VyY2VSZWFkZXIsIG1zY29ybGliLCBWZXJzaW9uPTQu
+MC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSNT
+eXN0ZW0uUmVzb3VyY2VzLlJ1bnRpbWVSZXNvdXJjZVNldAIAAAAAAAAAAAAAAFBBRFBBRFC0AAAA
+NDYAAAAAAAAAAAAATjYAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA2AAAAAAAAAAAAAAAAX0Nv
+ckRsbE1haW4AbXNjb3JlZS5kbGwAAAAAAP8lACAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAEAEAAAABgAAIAAAAAAAAAAAAAAAAAAAAEAAQAAADAAAIAAAAAAAAAAAAAAAAAAAAEAAAAAAEgA
+AABYQAAANgQAAAAAAAAAAAAANgQ0AAAAVgBTAF8AVgBFAFIAUwBJAE8ATgBfAEkATgBGAE8AAAAA
+AL0E7/4AAAEAAAABAD9IKhwAAAEAP0gqHD8AAAAAAAAABAAAAAIAAAAAAAAAAAAAAAAAAABEAAAA
+AQBWAGEAcgBGAGkAbABlAEkAbgBmAG8AAAAAACQABAAAAFQAcgBhAG4AcwBsAGEAdABpAG8AbgAA
+AAAAAACwBJYDAAABAFMAdAByAGkAbgBnAEYAaQBsAGUASQBuAGYAbwAAAHIDAAABADAAMAAwADAA
+MAA0AGIAMAAAABoAAQABAEMAbwBtAG0AZQBuAHQAcwAAAAAAAAAwAAgAAQBDAG8AbQBwAGEAbgB5
+AE4AYQBtAGUAAAAAAEgAUAAgAEkAbgBjAC4AAABwACQAAQBGAGkAbABlAEQAZQBzAGMAcgBpAHAA
+dABpAG8AbgAAAAAAUwBUAF8ANgBiADAANwBiAGUAMAA5AGEANwA3ADgANABiADcAMwA4ADQANQAx
+AGEANgBlAGEAZgA2ADgAYwBiADEAYwA2AAAAPgAPAAEARgBpAGwAZQBWAGUAcgBzAGkAbwBuAAAA
+AAAxAC4AMAAuADcAMgAxADAALgAxADgANAA5ADUAAAAAAHAAKAABAEkAbgB0AGUAcgBuAGEAbABO
+AGEAbQBlAAAAUwBUAF8ANgBiADAANwBiAGUAMAA5AGEANwA3ADgANABiADcAMwA4ADQANQAxAGEA
+NgBlAGEAZgA2ADgAYwBiADEAYwA2AC4AZABsAGwAAABWABkAAQBMAGUAZwBhAGwAQwBvAHAAeQBy
+AGkAZwBoAHQAAABDAG8AcAB5AHIAaQBnAGgAdAAgAEAAIABIAFAAIABJAG4AYwAuACAAMgAwADEA
+OQAAAAAAKgABAAEATABlAGcAYQBsAFQAcgBhAGQAZQBtAGEAcgBrAHMAAAAAAAAAAAB4ACgAAQBP
+AHIAaQBnAGkAbgBhAGwARgBpAGwAZQBuAGEAbQBlAAAAUwBUAF8ANgBiADAANwBiAGUAMAA5AGEA
+NwA3ADgANABiADcAMwA4ADQANQAxAGEANgBlAGEAZgA2ADgAYwBiADEAYwA2AC4AZABsAGwAAABo
+ACQAAQBQAHIAbwBkAHUAYwB0AE4AYQBtAGUAAAAAAFMAVABfADYAYgAwADcAYgBlADAAOQBhADcA
+NwA4ADQAYgA3ADMAOAA0ADUAMQBhADYAZQBhAGYANgA4AGMAYgAxAGMANgAAAEIADwABAFAAcgBv
+AGQAdQBjAHQAVgBlAHIAcwBpAG8AbgAAADEALgAwAC4ANwAyADEAMAAuADEAOAA0ADkANQAAAAAA
+RgAPAAEAQQBzAHMAZQBtAGIAbAB5ACAAVgBlAHIAcwBpAG8AbgAAADEALgAwAC4ANwAyADEAMAAu
+ADEAOAA0ADkANQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAADAAAAGA2AAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
+            </ScriptProject>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Foreach weather station\Parse and insert weather history data"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{FD475310-1DD3-4BBF-ABBD-5AE25C0571F7}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Parse and insert weather history data"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Foreach weather station\Parse and insert weather history data\Derived Column"
+                  componentClassID="Microsoft.DerivedColumn"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+                  name="Derived Column"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Inputs[Derived Column Input]"
+                      description="Input to the Derived Column Transformation"
+                      name="Derived Column Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Inputs[Derived Column Input].Columns[yyyy]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="yyyy"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[yyyy]" />
+                        <inputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Inputs[Derived Column Input].Columns[mm]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="mm"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[mm]" />
+                        <inputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Inputs[Derived Column Input].Columns[rain]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="rain"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[rain]" />
+                        <inputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Inputs[Derived Column Input].Columns[tmax]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="tmax"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[tmax]" />
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Output]"
+                      description="Default Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      name="Derived Column Output"
+                      synchronousInputId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Output].Columns[stationid]"
+                          dataType="i4"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Output].Columns[stationid]"
+                          name="stationid"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">@[User::StationId]</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">@[User::StationId]</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Output].Columns[year]"
+                          dataType="i2"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Output].Columns[year]"
+                          name="year"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">(DT_I2)#{Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[yyyy]}</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">(DT_I2)yyyy</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Output].Columns[month]"
+                          dataType="i2"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Output].Columns[month]"
+                          name="month"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">(DT_I2)#{Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[mm]}</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">(DT_I2)mm</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Output].Columns[maxtemp]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Output].Columns[maxtemp]"
+                          name="maxtemp"
+                          precision="5"
+                          scale="2"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[LEN]([TRIM](#{Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[tmax]})) &gt; 0 ? (DT_NUMERIC,5,2)#{Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[tmax]} : NULL(DT_NUMERIC,5,2)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">LEN(TRIM(tmax)) &gt; 0 ? (DT_NUMERIC,5,2)tmax : NULL(DT_NUMERIC,5,2)</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Output].Columns[rainamount]"
+                          dataType="numeric"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="IgnoreFailure"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Output].Columns[rainamount]"
+                          name="rainamount"
+                          precision="5"
+                          scale="2"
+                          truncationRowDisposition="IgnoreFailure">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[LEN]([TRIM](#{Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[rain]})) &gt; 0 ? (DT_NUMERIC,5,2)#{Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[rain]} : NULL(DT_NUMERIC,5,2)</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">LEN(TRIM(rain)) &gt; 0 ? (DT_NUMERIC,5,2)rain : NULL(DT_NUMERIC,5,2)</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Error Output]"
+                      description="Error Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Derived Column Error Output"
+                      synchronousInputId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source"
+                  componentClassID="Microsoft.FlatFileSource"
+                  contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                  description="Flat File Source"
+                  localeId="1033"
+                  name="Flat File Source"
+                  usesDispositions="true"
+                  version="1">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      description="Specifies whether zero-length columns are treated as null."
+                      name="RetainNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of an output column containing the file name. If no name is specified, no output column containing the file name will be generated."
+                      name="FileNameColumnName"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Connections[FlatFileConnection]"
+                      connectionManagerID="Package.ConnectionManagers[WeatherHistory File Conn Manager]"
+                      connectionManagerRefId="Package.ConnectionManagers[WeatherHistory File Conn Manager]"
+                      name="FlatFileConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output]"
+                      name="Flat File Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[yyyy]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[yyyy]"
+                          length="50"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[yyyy]"
+                          name="yyyy"
+                          truncationRowDisposition="IgnoreFailure">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[mm]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[mm]"
+                          length="50"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[mm]"
+                          name="mm"
+                          truncationRowDisposition="IgnoreFailure">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[tmax]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[tmax]"
+                          length="50"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[tmax]"
+                          name="tmax"
+                          truncationRowDisposition="IgnoreFailure">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[tmin]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[tmin]"
+                          length="50"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[tmin]"
+                          name="tmin"
+                          truncationRowDisposition="IgnoreFailure">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[frost]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[frost]"
+                          length="50"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[frost]"
+                          name="frost"
+                          truncationRowDisposition="IgnoreFailure">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[rain]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[rain]"
+                          length="50"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[rain]"
+                          name="rain"
+                          truncationRowDisposition="IgnoreFailure">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[sun]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[sun]"
+                          length="50"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[sun]"
+                          name="sun"
+                          truncationRowDisposition="IgnoreFailure">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[crlf]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[crlf]"
+                          length="255"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].Columns[crlf]"
+                          name="crlf"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[yyyy]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="yyyy" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[mm]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="mm" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[tmax]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="tmax" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[tmin]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="tmin" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[frost]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="frost" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[rain]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="rain" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[sun]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="sun" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[crlf]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="crlf" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Error Output]"
+                      isErrorOut="true"
+                      name="Flat File Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          codePage="1252"
+                          dataType="text"
+                          description="Flat File Source Error Output Column"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          name="Flat File Source Error Output Column" />
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination"
+                  componentClassID="Microsoft.OLEDBDestination"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="OLE DB Destination"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[StagingWeatherHistory]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">true</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Connections[OleDbConnection]"
+                      connectionManagerID="{29BE8F39-EBB7-4315-9621-D049770CEE09}:external"
+                      connectionManagerRefId="Project.ConnectionManagers[WeatherDataConnection]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[stationid]"
+                          cachedDataType="i4"
+                          cachedName="stationid"
+                          externalMetadataColumnId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[StationId]"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Output].Columns[stationid]" />
+                        <inputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[rainamount]"
+                          cachedDataType="numeric"
+                          cachedName="rainamount"
+                          cachedPrecision="5"
+                          cachedScale="2"
+                          externalMetadataColumnId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Rain]"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Output].Columns[rainamount]" />
+                        <inputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[month]"
+                          cachedDataType="i2"
+                          cachedName="month"
+                          externalMetadataColumnId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Month]"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Output].Columns[month]" />
+                        <inputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[year]"
+                          cachedDataType="i2"
+                          cachedName="year"
+                          externalMetadataColumnId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Year]"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Output].Columns[year]" />
+                        <inputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[maxtemp]"
+                          cachedDataType="numeric"
+                          cachedName="maxtemp"
+                          cachedPrecision="5"
+                          cachedScale="2"
+                          externalMetadataColumnId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MaxTemp]"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Output].Columns[maxtemp]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[StationId]"
+                          dataType="i4"
+                          name="StationId" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Year]"
+                          dataType="i2"
+                          name="Year" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Month]"
+                          dataType="i2"
+                          name="Month" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Rain]"
+                          dataType="numeric"
+                          name="Rain"
+                          precision="5"
+                          scale="2" />
+                        <externalMetadataColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MaxTemp]"
+                          dataType="numeric"
+                          name="MaxTemp"
+                          precision="5"
+                          scale="2" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Foreach weather station\Parse and insert weather history data.Paths[Derived Column Output]"
+                  endId="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  name="Derived Column Output"
+                  startId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Outputs[Derived Column Output]" />
+                <path
+                  refId="Package\Foreach weather station\Parse and insert weather history data.Paths[Flat File Source Output]"
+                  endId="Package\Foreach weather station\Parse and insert weather history data\Derived Column.Inputs[Derived Column Input]"
+                  name="Flat File Source Output"
+                  startId="Package\Foreach weather station\Parse and insert weather history data\Flat File Source.Outputs[Flat File Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Foreach weather station.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{B7CA03E4-EB5A-40E6-B729-B04DD4F54B8D}"
+          DTS:From="Package\Foreach weather station\Download and scrub weather history file"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Foreach weather station\Parse and insert weather history data" />
+      </DTS:PrecedenceConstraints>
+      <DTS:ForEachVariableMappings>
+        <DTS:ForEachVariableMapping
+          DTS:CreationName=""
+          DTS:DTSID="{CC716FF1-9ED1-45BD-90F4-01B8064F6221}"
+          DTS:ObjectName="{CC716FF1-9ED1-45BD-90F4-01B8064F6221}"
+          DTS:ValueIndex="0"
+          DTS:VariableName="User::StationId" />
+        <DTS:ForEachVariableMapping
+          DTS:CreationName=""
+          DTS:DTSID="{7723D450-074A-4643-BE2E-657090E53EE4}"
+          DTS:ObjectName="{7723D450-074A-4643-BE2E-657090E53EE4}"
+          DTS:ValueIndex="1"
+          DTS:VariableName="User::StationName" />
+      </DTS:ForEachVariableMappings>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Get stations"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{0060322F-B2E4-400D-8AAC-C445B3F902F4}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Get stations"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{29BE8F39-EBB7-4315-9621-D049770CEE09}"
+          SQLTask:SqlStatementSource="SELECT [StationId], [StationName]&#xA;  FROM [dbo].[DimWeatherStation]&#xA;"
+          SQLTask:ResultType="ResultSetType_Rowset" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::Stations" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Truncate weather history data"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{DC912955-0BF1-427D-9A81-330695387E2D}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Truncate weather history data"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{29BE8F39-EBB7-4315-9621-D049770CEE09}"
+          SQLTask:SqlStatementSource="  TRUNCATE TABLE [dbo].[StagingWeatherHistory]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{6698F8DE-72FC-4707-86EC-F7CB6D8367B0}"
+      DTS:From="Package\Get stations"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Foreach weather station" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{6098AC95-6553-484B-A88D-CD89A4C660BA}"
+      DTS:From="Package\Truncate weather history data"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Get stations" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="272,42"
+          Id="Package\Foreach weather station\Download and scrub weather history file"
+          TopLeft="23,39" />
+        <NodeLayout
+          Size="255,42"
+          Id="Package\Foreach weather station\Parse and insert weather history data"
+          TopLeft="35,132" />
+        <EdgeLayout
+          Id="Package\Foreach weather station.PrecedenceConstraints[Constraint]"
+          TopLeft="160.75,81">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,51"
+              Start="0,0"
+              End="0,43.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,43.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="313,239"
+          Size="313,282"
+          Id="Package\Foreach weather station"
+          TopLeft="286,216" />
+        <NodeLayout
+          Size="135,42"
+          Id="Package\Get stations"
+          TopLeft="372,132" />
+        <NodeLayout
+          Size="221,42"
+          Id="Package\Truncate weather history data"
+          TopLeft="324,50" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="441,174">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,42"
+              Start="0,0"
+              End="0,34.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,34.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="437,92">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,40"
+              Start="0,0"
+              End="0,32.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,32.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Foreach weather station\Parse and insert weather history data">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="151,42"
+          Id="Package\Foreach weather station\Parse and insert weather history data\Flat File Source"
+          TopLeft="247,8" />
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination"
+          TopLeft="231,224" />
+        <NodeLayout
+          Size="154,42"
+          Id="Package\Foreach weather station\Parse and insert weather history data\Derived Column"
+          TopLeft="240,128" />
+        <EdgeLayout
+          Id="Package\Foreach weather station\Parse and insert weather history data.Paths[Flat File Source Output]"
+          TopLeft="319.75,50">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,78"
+              Start="0,0"
+              End="0,70.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,70.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Foreach weather station\Parse and insert weather history data.Paths[Derived Column Output]"
+          TopLeft="316.75,170">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,54"
+              Start="0,0"
+              End="0,46.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,46.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Foreach weather station\Parse and insert weather history data\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
