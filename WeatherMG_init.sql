@@ -13,7 +13,7 @@ IF OBJECT_ID('dbo.StagingWeatherCurrent') IS NULL
 CREATE TABLE [dbo].[StagingWeatherCurrent](
 	[StationId] [int] NOT NULL,
 	[MeasurementDate] [datetime2](0) NOT NULL,
-	[MaxTemp] [decimal](5, 2) NOT NULL,
+	[MaxTemp] [decimal](5, 2) NULL,
 	[Rain] [decimal](6, 3) NULL,
 	[LoadedStamp] [datetime2](0) NOT NULL DEFAULT (GETUTCDATE())
 ) ON [PRIMARY]
@@ -25,7 +25,7 @@ IF OBJECT_ID('dbo.StagingWeatherForecast') IS NULL
 CREATE TABLE [dbo].[StagingWeatherForecast](
 	[StationId] [int] NOT NULL,
 	[MeasurementDate] [datetime2](0) NOT NULL,
-	[MaxTemp] [decimal](5, 2) NOT NULL,
+	[MaxTemp] [decimal](5, 2) NULL,
 	[Rain] [decimal](6, 3) NULL,
 	[LoadedStamp] [datetime2](0) NOT NULL DEFAULT (GETUTCDATE()) 
 ) ON [PRIMARY]
@@ -71,25 +71,25 @@ IF NOT EXISTS (SELECT 1 FROM [dbo].[DimWeatherStation] WHERE [StationId] = 72999
 INSERT [dbo].[DimWeatherStation] ([StationId], [StationName]) VALUES (7299942, N'Camborne')
 END
 
----CREATE FactWeatherHistory
-IF OBJECT_ID('dbo.FactWeatherHistory') IS NULL
-CREATE TABLE [dbo].[FactWeatherHistory]
+---CREATE FactWeatherMonthly
+IF OBJECT_ID('dbo.FactWeatherMonthly') IS NULL
+CREATE TABLE [dbo].[FactWeatherMonthly]
 (
-[WeatherHistoryKey] INT IDENTITY (1,1) NOT NULL,
+[WeatherMonthlyKey] INT IDENTITY (1,1) NOT NULL,
 [WeatherStationKey] INT NOT NULL,
 [Date] Date NOT NULL,
 [MeanMaxTemp_degC] DECIMAL (4,2),
 [TotalRain_mm] DECIMAL (5,2),
-CONSTRAINT [PK_FactWeatherHistory] PRIMARY KEY CLUSTERED
+CONSTRAINT [PK_FactWeatherMonthly] PRIMARY KEY CLUSTERED
 (
-[WeatherHistoryKey] ASC
+[WeatherMonthlyKey] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 --Adding Foreign Keys
 IF NOT EXISTS (SELECT *   FROM sys.foreign_keys 
-WHERE object_id = OBJECT_ID(N'dbo.FK_FactWeatherHistory_DimWeatherStation') AND parent_object_id = OBJECT_ID(N'dbo.FactWeatherHistory'))
-ALTER TABLE [dbo].[FactWeatherHistory]
-ADD CONSTRAINT FK_FactWeatherHistory_DimWeatherStation FOREIGN KEY ([WeatherStationKey])
+WHERE object_id = OBJECT_ID(N'dbo.FK_FactWeatherMonthly_DimWeatherStation') AND parent_object_id = OBJECT_ID(N'dbo.FactWeatherMonthly'))
+ALTER TABLE [dbo].[FactWeatherMonthly]
+ADD CONSTRAINT FK_FactWeatherMonthly_DimWeatherStation FOREIGN KEY ([WeatherStationKey])
 REFERENCES [dbo].[DimWeatherStation] ([WeatherStationKey])
 
 

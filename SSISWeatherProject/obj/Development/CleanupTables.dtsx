@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="9/27/2019 7:38:22 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="DESKTOP-BTNGP73"
+  DTS:CreatorName="DESKTOP-BTNGP73\masha-desk"
+  DTS:DTSID="{6106D029-C51F-469A-B917-2492C07721E5}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.1301.433"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="CleanupTables"
+  DTS:PackageType="5"
+  DTS:VersionBuild="14"
+  DTS:VersionGUID="{AC92DD94-6E03-40B2-BFDB-041F86BBBFAA}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{73180563-9980-4BDE-A08F-CF04ECB88FA8}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="KeepDaysFact3H">
+      <DTS:VariableValue
+        DTS:DataType="3">7</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{0B59F307-8302-46BA-9936-43F35A4CB82E}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="KeepDaysFactDaily">
+      <DTS:VariableValue
+        DTS:DataType="3">30</DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{DA4CDEC4-5C6F-4F12-A897-CD54BF0CF595}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="KeepDaysStaging">
+      <DTS:VariableValue
+        DTS:DataType="3">7</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Clean up stale data"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{AFE73AD2-2808-4658-ABE9-9A2121FC9F5D}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Clean up stale data">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Clean up stale data\Clean up fact tables"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{6D04866B-30C4-4437-90A4-7C00702442FE}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Clean up fact tables"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{29BE8F39-EBB7-4315-9621-D049770CEE09}"
+              SQLTask:SqlStatementSource="&#xA;DELETE FROM [dbo].[FactWeather3h]&#xA;WHERE [Date] &lt; DATEADD(day,-? , getutcdate() )&#xA;&#xA;DELETE FROM [dbo].[FactWeatherDaily]&#xA;WHERE [Date] &lt; DATEADD(day,-? , getutcdate() )" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::KeepDaysFact3H"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="2"
+                SQLTask:ParameterSize="-1" />
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="1"
+                SQLTask:DtsVariableName="User::KeepDaysFactDaily"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="2"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Clean up stale data\Clean up staging tables"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{D0DF4EE6-BD9D-4CA1-95BF-D62468833AF1}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Clean up staging tables"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{29BE8F39-EBB7-4315-9621-D049770CEE09}"
+              SQLTask:SqlStatementSource="DECLARE @daysToKeep int &#xA;SET @daysToKeep = ?&#xA;&#xA;DELETE FROM [dbo].[StagingWeatherCurrent]&#xA;WHERE [LoadedStamp] &lt; DATEADD(day,-@daysToKeep , getutcdate() )&#xA;&#xA;DELETE FROM [dbo].[StagingWeatherForecast]&#xA;WHERE [LoadedStamp] &lt; DATEADD(day,-@daysToKeep , getutcdate() )&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+              <SQLTask:ParameterBinding
+                SQLTask:ParameterName="0"
+                SQLTask:DtsVariableName="User::KeepDaysStaging"
+                SQLTask:ParameterDirection="Input"
+                SQLTask:DataType="2"
+                SQLTask:ParameterSize="-1" />
+            </SQLTask:SqlTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="189,42"
+          Id="Package\Clean up stale data\Clean up staging tables"
+          TopLeft="27.5,44.5" />
+        <NodeLayout
+          Size="172,42"
+          Id="Package\Clean up stale data\Clean up fact tables"
+          TopLeft="264,46" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="517,163"
+          Size="517,206"
+          Id="Package\Clean up stale data"
+          TopLeft="191,146" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

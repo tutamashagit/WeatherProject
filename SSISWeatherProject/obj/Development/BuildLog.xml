@@ -2,7 +2,7 @@
 <BuildLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <ProjectInfo>
     <Name>SSISWeatherProject</Name>
-    <LastWriteTime>2019-09-28T13:10:21.093127Z</LastWriteTime>
+    <LastWriteTime>2019-09-29T15:21:12.2456865Z</LastWriteTime>
     <LastKnownProtectionLevel>EncryptSensitiveWithUserKey</LastKnownProtectionLevel>
   </ProjectInfo>
   <LastBuildInfos>
@@ -18,17 +18,27 @@
     </ProjectBuildItemInfo>
     <ProjectBuildItemInfo>
       <Name>WeatherForecastLoad.dtsx</Name>
-      <LastWriteTime>2019-09-27T23:29:25.8840266Z</LastWriteTime>
+      <LastWriteTime>2019-09-29T17:21:04.3553965Z</LastWriteTime>
       <LastKnownProtectionLevel>EncryptSensitiveWithUserKey</LastKnownProtectionLevel>
     </ProjectBuildItemInfo>
     <ProjectBuildItemInfo>
-      <Name>WeatherCurrentCleanup.dtsx</Name>
-      <LastWriteTime>2019-09-28T14:25:20.6441207Z</LastWriteTime>
+      <Name>FactDailyPopulate.dtsx</Name>
+      <LastWriteTime>2019-09-29T18:01:13.6843855Z</LastWriteTime>
       <LastKnownProtectionLevel>EncryptSensitiveWithUserKey</LastKnownProtectionLevel>
     </ProjectBuildItemInfo>
     <ProjectBuildItemInfo>
-      <Name>WeatherForecastCleanup.dtsx</Name>
-      <LastWriteTime>2019-09-28T14:25:19.3625466Z</LastWriteTime>
+      <Name>Fact3hPopulate.dtsx</Name>
+      <LastWriteTime>2019-09-29T18:10:17.6895595Z</LastWriteTime>
+      <LastKnownProtectionLevel>EncryptSensitiveWithUserKey</LastKnownProtectionLevel>
+    </ProjectBuildItemInfo>
+    <ProjectBuildItemInfo>
+      <Name>CleanupTables.dtsx</Name>
+      <LastWriteTime>2019-09-29T15:21:12.2057927Z</LastWriteTime>
+      <LastKnownProtectionLevel>EncryptSensitiveWithUserKey</LastKnownProtectionLevel>
+    </ProjectBuildItemInfo>
+    <ProjectBuildItemInfo>
+      <Name>FactMonthlyPopulate.dtsx</Name>
+      <LastWriteTime>2019-09-29T15:21:12.1698889Z</LastWriteTime>
       <LastKnownProtectionLevel>EncryptSensitiveWithUserKey</LastKnownProtectionLevel>
     </ProjectBuildItemInfo>
   </LastBuildInfos>

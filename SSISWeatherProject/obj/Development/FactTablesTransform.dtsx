@@ -1,52 +1,62 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="9/27/2019 7:38:22 PM"
+  DTS:CreationDate="9/28/2019 2:52:40 PM"
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="DESKTOP-BTNGP73"
   DTS:CreatorName="DESKTOP-BTNGP73\masha-desk"
-  DTS:DTSID="{6106D029-C51F-469A-B917-2492C07721E5}"
+  DTS:DTSID="{E87D2970-9C93-4322-90CD-09737CF93574}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="15.0.1301.433"
   DTS:LocaleID="1033"
-  DTS:ObjectName="WeatherForecastCleanup"
+  DTS:ObjectName="FactTablesTransform"
   DTS:PackageType="5"
-  DTS:VersionBuild="8"
-  DTS:VersionGUID="{77759A8A-273E-4D3E-9A2C-20C9D0A35996}">
+  DTS:VersionBuild="2"
+  DTS:VersionGUID="{7DD138B8-2C8D-4C44-80C9-FEF28127DE42}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{DA4CDEC4-5C6F-4F12-A897-CD54BF0CF595}"
+      DTS:DTSID="{33EA94EE-5346-46B1-B678-C628DBB4C148}"
       DTS:IncludeInDebugDump="6789"
       DTS:Namespace="User"
-      DTS:ObjectName="NumDaysToKeep">
+      DTS:ObjectName="LastExecutionDateTime">
       <DTS:VariableValue
-        DTS:DataType="3">7</DTS:VariableValue>
+        DTS:DataType="7">9/28/2019 2:54:58 PM</DTS:VariableValue>
     </DTS:Variable>
   </DTS:Variables>
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\Clean up weather forecast data"
+      DTS:refId="Package\Get last execution datetime"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
-      DTS:DTSID="{D0DF4EE6-BD9D-4CA1-95BF-D62468833AF1}"
+      DTS:DTSID="{EF22C85D-7A73-45A0-949C-8D911E19695C}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Clean up weather forecast data"
+      DTS:ObjectName="Get last execution datetime"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{29BE8F39-EBB7-4315-9621-D049770CEE09}"
-          SQLTask:SqlStatementSource="DELETE FROM [dbo].[StagingWeatherForecast]&#xA;WHERE [LoadedStamp] &lt; DATEADD(day,-?, getdate())" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          SQLTask:SqlStatementSource="&#xA;DECLARE&#x9;@PackageID uniqueidentifier &#xA;DECLARE&#x9;@PackageName varchar(50) &#xA;&#xA;SET @PackageID  = ?&#xA;SET @PackageName  = ?&#xA;&#xA;DECLARE @last_exec datetime2(0)&#xA;IF EXISTS ( SELECT 1 FROM [WeatherMG].[dbo].[PackageExecutionStamp] WHERE [PackageID] = @PackageID  )&#xA; BEGIN&#xA;  SELECT @last_exec=[ExecutionStamp]&#xA;  FROM [WeatherMG].[dbo].[PackageExecutionStamp]&#xA;  WHERE [PackageID] = '{EF22C85D-7A73-45A0-949C-8D911E19695C}'&#xA; END&#xA;ELSE&#xA; BEGIN&#xA;    SET @last_exec ='1900-01-01'&#xA;&#x9;INSERT INTO [dbo].[PackageExecutionStamp]&#xA;           ([PackageID]&#xA;           ,[PackageName]&#xA;           ,[ExecutionStamp])&#xA;     VALUES&#xA;           (@PackageID  &#xA;           ,@PackageName  &#xA;           ,@last_exec)&#xA; END&#xA;&#xA;SELECT @last_exec&#xA;"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="0"
+            SQLTask:DtsVariableName="User::LastExecutionDateTime" />
           <SQLTask:ParameterBinding
             SQLTask:ParameterName="0"
-            SQLTask:DtsVariableName="User::NumDaysToKeep"
+            SQLTask:DtsVariableName="System::PackageID"
             SQLTask:ParameterDirection="Input"
-            SQLTask:DataType="2"
+            SQLTask:DataType="72"
             SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="System::PackageName"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="129"
+            SQLTask:ParameterSize="50" />
         </SQLTask:SqlTaskData>
       </DTS:ObjectData>
     </DTS:Executable>
@@ -64,9 +74,9 @@
       <GraphLayout
         Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
         <NodeLayout
-          Size="226,42"
-          Id="Package\Clean up weather forecast data"
-          TopLeft="317,63" />
+          Size="208,42"
+          Id="Package\Get last execution datetime"
+          TopLeft="317,50" />
       </GraphLayout>
     </LayoutInfo>
   </Package>

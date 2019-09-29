@@ -1,53 +1,36 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
-  DTS:CreationDate="9/27/2019 7:05:12 PM"
+  DTS:CreationDate="9/29/2019 11:19:45 AM"
   DTS:CreationName="Microsoft.Package"
   DTS:CreatorComputerName="DESKTOP-BTNGP73"
   DTS:CreatorName="DESKTOP-BTNGP73\masha-desk"
-  DTS:DTSID="{3023760C-4834-4C06-AF73-AD4A293C8E3F}"
+  DTS:DTSID="{3670D03C-ACBE-440E-A40C-CE699CC8332A}"
   DTS:ExecutableType="Microsoft.Package"
   DTS:LastModifiedProductVersion="15.0.1301.433"
   DTS:LocaleID="1033"
-  DTS:ObjectName="WeatherCurrentCleanup"
+  DTS:ObjectName="Package1"
   DTS:PackageType="5"
-  DTS:VersionBuild="9"
-  DTS:VersionGUID="{8CAC227B-3F26-4394-8332-4060C7323F01}">
+  DTS:VersionBuild="2"
+  DTS:VersionGUID="{0052B541-626D-4D10-9F82-76B7E27E8B23}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
-  <DTS:Variables>
-    <DTS:Variable
-      DTS:CreationName=""
-      DTS:DTSID="{98C84C15-9BE8-493B-850B-AB20A894189A}"
-      DTS:IncludeInDebugDump="6789"
-      DTS:Namespace="User"
-      DTS:ObjectName="NumDaysToKeep">
-      <DTS:VariableValue
-        DTS:DataType="3">30</DTS:VariableValue>
-    </DTS:Variable>
-  </DTS:Variables>
+  <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
-      DTS:refId="Package\Clean up weather current data"
+      DTS:refId="Package\Populate Fact Monthly table"
       DTS:CreationName="Microsoft.ExecuteSQLTask"
       DTS:Description="Execute SQL Task"
-      DTS:DTSID="{1F51370B-DD67-413D-8A91-2D1642504270}"
+      DTS:DTSID="{39E2B248-1DBD-4376-B50A-C8E5A0221C74}"
       DTS:ExecutableType="Microsoft.ExecuteSQLTask"
       DTS:LocaleID="-1"
-      DTS:ObjectName="Clean up weather current data"
+      DTS:ObjectName="Populate Fact Monthly table"
       DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{29BE8F39-EBB7-4315-9621-D049770CEE09}"
-          SQLTask:SqlStatementSource="DELETE FROM [dbo].[StagingWeatherCurrent]&#xA;WHERE [LoadedStamp] &lt; DATEADD(day,-?, getdate())&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
-          <SQLTask:ParameterBinding
-            SQLTask:ParameterName="0"
-            SQLTask:DtsVariableName="User::NumDaysToKeep"
-            SQLTask:ParameterDirection="Input"
-            SQLTask:DataType="2"
-            SQLTask:ParameterSize="-1" />
-        </SQLTask:SqlTaskData>
+          SQLTask:SqlStatementSource="INSERT INTO [dbo].[FactWeatherMonthly](&#xA;&#x9;[WeatherStationKey],&#xA;&#x9;[Date] ,&#xA;&#x9;[MeanMaxTemp_degC],&#xA;&#x9;[TotalRain_mm] )&#xA;SELECT &#xA;&#x9;dw.[WeatherStationKey],&#xA;&#x9;EOMONTH(DATEFROMPARTS ( [Year], [Month], 1 )) as [Date], &#xA;&#x9;MaxTemp,&#xA;&#x9;Rain&#xA;FROM [dbo].[StagingWeatherHistory] sh&#xA;&#x9;INNER JOIN [dbo].[DimWeatherStation] dw ON sh.StationId = dw.StationId &#xA;WHERE EOMONTH(DATEFROMPARTS ( [Year], [Month], 1 )) &gt; ISNULL((SELECT Max([Date]) FROM [dbo].[FactWeatherMonthly]), '1000-01-01')" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
@@ -64,9 +47,9 @@
       <GraphLayout
         Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
         <NodeLayout
-          Size="223,42"
-          Id="Package\Clean up weather current data"
-          TopLeft="345,141" />
+          Size="210,42"
+          Id="Package\Populate Fact Monthly table"
+          TopLeft="235,170" />
       </GraphLayout>
     </LayoutInfo>
   </Package>

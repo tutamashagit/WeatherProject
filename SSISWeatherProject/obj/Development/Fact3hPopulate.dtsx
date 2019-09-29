@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="9/28/2019 10:28:53 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="DESKTOP-BTNGP73"
+  DTS:CreatorName="DESKTOP-BTNGP73\masha-desk"
+  DTS:DTSID="{3665654B-9BA1-4C4E-AFAB-71DF71366D16}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.1301.433"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Fact3hPopulate"
+  DTS:PackageType="5"
+  DTS:VersionBuild="10"
+  DTS:VersionGUID="{92993DA4-9E5B-456D-8C68-99F92565CB57}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{DD5A55FD-D5D2-4D62-9A41-207284EF15C8}"
+      DTS:IncludeInDebugDump="6789"
+      DTS:Namespace="User"
+      DTS:ObjectName="LastExecutionDateTime">
+      <DTS:VariableValue
+        DTS:DataType="7">9/29/2019 1:39:40 PM</DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Get package last execution datetime"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{674254CF-D19F-4AC0-95B5-4DF53CF988C8}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Get package last execution datetime"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{29BE8F39-EBB7-4315-9621-D049770CEE09}"
+          SQLTask:SqlStatementSource="&#xA;DECLARE&#x9;@PackageID uniqueidentifier &#xA;DECLARE&#x9;@PackageName varchar(50) &#xA;&#xA;SET @PackageID  = ?&#xA;SET @PackageName  = ?&#xA;&#xA;DECLARE @last_exec datetime2(0)&#xA;IF EXISTS ( SELECT 1 FROM [WeatherMG].[dbo].[PackageExecutionStamp] WHERE [PackageID] = @PackageID  )&#xA; BEGIN&#xA;  SELECT @last_exec=[ExecutionStamp]&#xA;  FROM [WeatherMG].[dbo].[PackageExecutionStamp]&#xA;  WHERE [PackageID] = @PackageID  &#xA; END&#xA;ELSE&#xA; BEGIN&#xA;    SET @last_exec ='1900-01-01'&#xA;    INSERT INTO [dbo].[PackageExecutionStamp]&#xA;           ([PackageID]&#xA;           ,[PackageName]&#xA;           ,[ExecutionStamp])&#xA;     VALUES&#xA;           (@PackageID  &#xA;           ,@PackageName  &#xA;           ,@last_exec)&#xA; END&#xA;&#xA;SELECT @last_exec&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="System::PackageID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="72"
+            SQLTask:ParameterSize="-1" />
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="1"
+            SQLTask:DtsVariableName="System::PackageName"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="129"
+            SQLTask:ParameterSize="50" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Populate Fact 3H table"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{A0747D20-21FB-4185-BCC8-C2E28BB7831C}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Populate Fact 3H table"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{29BE8F39-EBB7-4315-9621-D049770CEE09}"
+          SQLTask:SqlStatementSource="INSERT INTO [dbo].FactWeather3h (&#xA;&#x9;[WeatherStationKey],&#xA;&#x9;[Date],&#xA;&#x9;[TimeInterval],&#xA;&#x9;[ForecastMeanMaxTemp_degC],&#xA;&#x9;[CurrentMeanMaxTemp_degC], &#xA;&#x9;[ForecastTotalRain_mm], &#xA;&#x9;[CurrentTotalRain_mm] ) &#xA;SELECT [DimWeatherStation].WeatherStationKey, [Current].[Date], [Current].[TimeInterval], [Forecast_MeanMaxTemp_degC], [Current_MeanMaxTemp_degC], [Forecast_TotalRain_mm], [Current_TotalRain_mm]&#xA;FROM&#xA;   (SELECT [StationId],&#xA;&#x9;&#x9;CAST(MeasurementDate as date) [Date], &#xA;&#x9;&#x9;MIN((( DATEPART(hour, [MeasurementDate])*60 + DATEPART(minute, [MeasurementDate]))/180) + 1) as [TimeInterval],&#xA;&#x9;&#x9;AVG(MaxTemp) as [Current_MeanMaxTemp_degC], &#xA;&#x9;&#x9;AVG(ISNULL(Rain,0)) as [Current_TotalRain_mm]&#x9;&#x9;&#xA;&#x9;FROM [dbo].[StagingWeatherCurrent]&#xA;&#x9;WHERE [LoadedStamp] &gt;?&#xA;&#x9;-- there should not be more than 1 record if current weather load is executed once every 3 hours (groupping just in case)&#xA;&#x9;GROUP BY [StationId], cast([MeasurementDate] as date), ((( DATEPART(hour, [MeasurementDate])*60 + DATEPART(minute, [MeasurementDate]))/180) + 1)&#xA;&#x9;) AS [Current]&#xA;&#x9;INNER JOIN&#xA;&#x9;(SELECT [StationId],&#xA;&#x9;&#x9;CAST([MeasurementDate] as date) [Date], &#xA;&#x9;&#x9;(( DATEPART(hour, [MeasurementDate])*60 + DATEPART(minute, [MeasurementDate]))/180) + 1 as [TimeInterval],&#xA;&#x9;&#x9;[MaxTemp] as [Forecast_MeanMaxTemp_degC], &#xA;&#x9;&#x9;ISNULL([Rain],0) as [Forecast_TotalRain_mm]&#xA;&#x9;FROM [dbo].[StagingWeatherForecast]&#xA;&#x9;) AS Forecast&#xA;&#x9;ON [Current].StationId = Forecast.StationId AND [Current].[date] = Forecast.[date] AND [Current].[TimeInterval] = Forecast.[TimeInterval]&#xA;&#x9;INNER JOIN &#x9;[dbo].[DimWeatherStation] ON [Current].StationId = [DimWeatherStation].StationId" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="User::LastExecutionDateTime"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="7"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update last execution datetime"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{F3FBEB36-93FE-42C6-AD5D-135F922A7F8F}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update last execution datetime"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{29BE8F39-EBB7-4315-9621-D049770CEE09}"
+          SQLTask:SqlStatementSource="UPDATE [dbo].[PackageExecutionStamp]&#xA;SET [ExecutionStamp] = GETUTCDATE()&#xA;WHERE [PackageID] = ?&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ParameterBinding
+            SQLTask:ParameterName="0"
+            SQLTask:DtsVariableName="System::PackageID"
+            SQLTask:ParameterDirection="Input"
+            SQLTask:DataType="72"
+            SQLTask:ParameterSize="-1" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{513D247B-326F-4B44-B27E-2D675AABA064}"
+      DTS:From="Package\Get package last execution datetime"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Populate Fact 3H table" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{7FA6DB33-2AD5-4933-9FBC-285AB6BABF31}"
+      DTS:From="Package\Populate Fact 3H table"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Update last execution datetime" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="250,42"
+          Id="Package\Get package last execution datetime"
+          TopLeft="263,47" />
+        <NodeLayout
+          Size="186,42"
+          Id="Package\Populate Fact 3H table"
+          TopLeft="298,159" />
+        <NodeLayout
+          Size="225,42"
+          Id="Package\Update last execution datetime"
+          TopLeft="275,284" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="389.5,89">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,70"
+              Start="0,0"
+              End="0,62.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,62.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="389.25,201">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,83"
+              Start="0,0"
+              End="0,75.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,75.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

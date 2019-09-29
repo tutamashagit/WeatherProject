@@ -26,15 +26,17 @@
           <SSIS:Property SSIS:Name="CreatorComputerName">DESKTOP-BTNGP73</SSIS:Property>
           <SSIS:Property SSIS:Name="Description">
           </SSIS:Property>
-          <SSIS:Property SSIS:Name="PasswordVerifier" SSIS:Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAzsg8yLDLmESGHqUH0mkNaAAAAAACAAAAAAAQZgAAAAEAACAAAACBrHm8l449X74QwVwrh/0x8wI+OFGf3KrlgEto5Ez7SAAAAAAOgAAAAAIAACAAAAAWtSIXK+xjbbRJRGu5aUD/t+T62m2UUHt8ERtQYNNCMZAAAAATNZaLI9MY5jMx2rUYtQtotteEApM6WfSnizl99rXAy+85iOQw+tNJ9M55Tgo4nwdJYstQn37JUB4qs0IjBzs815hv9C0yFPd8My/dnBmhMmPZ7KmMOQbXa7fbwNvsAog+d/9JkEKZy4PXfxO/a3dGeXW7Ai94jr0RhlhwxNbQtsT9jjHgPS6ajtojiuTBN2tAAAAAFNnv7i4m3XtTZvFKdloWdMtoxSgMZ7WCubVaR/Vc7fyAFEFrHr60mRMPcNb/I1kUGEyjhAMZV5PO/jpo4kiUAw==</SSIS:Property>
+          <SSIS:Property SSIS:Name="PasswordVerifier" SSIS:Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAzsg8yLDLmESGHqUH0mkNaAAAAAACAAAAAAAQZgAAAAEAACAAAAC2nNXfMP1T8SW5M7QTFBcGdv6qWkQT/Pnl0ZgY3ue0SwAAAAAOgAAAAAIAACAAAAAfo6AGRAdcFIz4JUF0pSrF3EJKxBWysdOJUaTKP60WapAAAAAFaWqxgfvkcFe5dZzAWn9/x1sC7yHWxvdIijWnsxHX81Rs9igIkaB/7L5wTRjlbczUtQK7YIGxSCfbxBtPczr3+Ekbd0+FXzs+4Bqo9kkJpz/Eo31TV2chMcIfzYkpelMsdvkYEe1jPLbVKkoH8y+bsWeH2L5GGTICKqAmUtTcaXehBr8MOP2uSdfZFVRoX/5AAAAA4dsL8ZZVG1qLB5dqoppucywpTub9rX82LFHPxtEBeMrhQ4WCzmOtBHbVntFVjqaBNnu8UTvZ5KQs5HSLUubzgg==</SSIS:Property>
           <SSIS:Property SSIS:Name="FormatVersion">1</SSIS:Property>
         </SSIS:Properties>
         <SSIS:Packages>
           <SSIS:Package SSIS:Name="WeatherCurrentLoad.dtsx" SSIS:EntryPoint="1" />
           <SSIS:Package SSIS:Name="WeatherHistoryLoad.dtsx" SSIS:EntryPoint="1" />
           <SSIS:Package SSIS:Name="WeatherForecastLoad.dtsx" SSIS:EntryPoint="1" />
-          <SSIS:Package SSIS:Name="WeatherCurrentCleanup.dtsx" SSIS:EntryPoint="1" />
-          <SSIS:Package SSIS:Name="WeatherForecastCleanup.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="FactDailyPopulate.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="Fact3hPopulate.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="CleanupTables.dtsx" SSIS:EntryPoint="1" />
+          <SSIS:Package SSIS:Name="FactMonthlyPopulate.dtsx" SSIS:EntryPoint="1" />
         </SSIS:Packages>
         <SSIS:ConnectionManagers>
           <SSIS:ConnectionManager SSIS:Name="WeatherDataConnection.conmgr" />
@@ -326,8 +328,6 @@
                     <SSIS:Property SSIS:Name="IncludeInDebugDump">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Required">0</SSIS:Property>
                     <SSIS:Property SSIS:Name="Sensitive">0</SSIS:Property>
-                    <SSIS:Property SSIS:Name="Value">
-                    </SSIS:Property>
                     <SSIS:Property SSIS:Name="DataType">18</SSIS:Property>
                   </SSIS:Properties>
                 </SSIS:Parameter>
@@ -369,10 +369,10 @@
                 <SSIS:Property SSIS:Name="Name">WeatherForecastLoad</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionBuild">28</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">32</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{4D7F066D-218F-4BD3-9CDA-57252273655D}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{38E1047D-C8DD-44C2-B58E-D921767C8AF2}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -380,16 +380,16 @@
               </SSIS:Properties>
               <SSIS:Parameters />
             </SSIS:PackageMetaData>
-            <SSIS:PackageMetaData SSIS:Name="WeatherCurrentCleanup.dtsx">
+            <SSIS:PackageMetaData SSIS:Name="FactDailyPopulate.dtsx">
               <SSIS:Properties>
-                <SSIS:Property SSIS:Name="ID">{3023760C-4834-4C06-AF73-AD4A293C8E3F}</SSIS:Property>
-                <SSIS:Property SSIS:Name="Name">WeatherCurrentCleanup</SSIS:Property>
+                <SSIS:Property SSIS:Name="ID">{E87D2970-9C93-4322-90CD-09737CF93574}</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">FactDailyPopulate</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionBuild">9</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">25</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{8CAC227B-3F26-4394-8332-4060C7323F01}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{180164A3-2A03-463A-A697-D118B107D9F7}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
@@ -397,16 +397,50 @@
               </SSIS:Properties>
               <SSIS:Parameters />
             </SSIS:PackageMetaData>
-            <SSIS:PackageMetaData SSIS:Name="WeatherForecastCleanup.dtsx">
+            <SSIS:PackageMetaData SSIS:Name="Fact3hPopulate.dtsx">
+              <SSIS:Properties>
+                <SSIS:Property SSIS:Name="ID">{3665654B-9BA1-4C4E-AFAB-71DF71366D16}</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">Fact3hPopulate</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">10</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionComments">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{92993DA4-9E5B-456D-8C68-99F92565CB57}</SSIS:Property>
+                <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
+                <SSIS:Property SSIS:Name="Description">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="ProtectionLevel">1</SSIS:Property>
+              </SSIS:Properties>
+              <SSIS:Parameters />
+            </SSIS:PackageMetaData>
+            <SSIS:PackageMetaData SSIS:Name="CleanupTables.dtsx">
               <SSIS:Properties>
                 <SSIS:Property SSIS:Name="ID">{6106D029-C51F-469A-B917-2492C07721E5}</SSIS:Property>
-                <SSIS:Property SSIS:Name="Name">WeatherForecastCleanup</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">CleanupTables</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionBuild">8</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">14</SSIS:Property>
                 <SSIS:Property SSIS:Name="VersionComments">
                 </SSIS:Property>
-                <SSIS:Property SSIS:Name="VersionGUID">{77759A8A-273E-4D3E-9A2C-20C9D0A35996}</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{AC92DD94-6E03-40B2-BFDB-041F86BBBFAA}</SSIS:Property>
+                <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
+                <SSIS:Property SSIS:Name="Description">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="ProtectionLevel">1</SSIS:Property>
+              </SSIS:Properties>
+              <SSIS:Parameters />
+            </SSIS:PackageMetaData>
+            <SSIS:PackageMetaData SSIS:Name="FactMonthlyPopulate.dtsx">
+              <SSIS:Properties>
+                <SSIS:Property SSIS:Name="ID">{3670D03C-ACBE-440E-A40C-CE699CC8332A}</SSIS:Property>
+                <SSIS:Property SSIS:Name="Name">Package1</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMajor">1</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionMinor">0</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionBuild">2</SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionComments">
+                </SSIS:Property>
+                <SSIS:Property SSIS:Name="VersionGUID">{0052B541-626D-4D10-9F82-76B7E27E8B23}</SSIS:Property>
                 <SSIS:Property SSIS:Name="PackageFormatVersion">8</SSIS:Property>
                 <SSIS:Property SSIS:Name="Description">
                 </SSIS:Property>
