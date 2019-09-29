@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="FactDailyPopulate"
   DTS:PackageType="5"
-  DTS:VersionBuild="25"
-  DTS:VersionGUID="{180164A3-2A03-463A-A697-D118B107D9F7}">
+  DTS:VersionBuild="26"
+  DTS:VersionGUID="{2E6BFF1F-6AE4-494C-A710-B2F2DD38443C}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables>
